@@ -1,0 +1,42 @@
+set nocompatible
+
+set splitbelow
+set splitright
+set tabpagemax=9999
+
+syntax on
+set autoindent
+set backspace=indent,eol,start
+" filetype plugin indent on
+set shiftwidth=2
+set tabstop=2
+set expandtab
+
+set path+=**
+set wildmenu
+
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+set noswapfile
+set hidden
+
+set cursorline
+set number
+set relativenumber
+
+set statusline=2
+colorscheme onehalflight
+set t_Co=256
+
+map <leader>h :noh<CR>
+
+command! CDC lcd %:p:h
+
+let g:user_emmet_leader_key = ','
+let g:user_emmet_mode='a'
+
+source /usr/share/doc/fzf/examples/fzf.vim
+let $FZF_DEFAULT_COMMAND='find'
