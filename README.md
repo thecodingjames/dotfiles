@@ -5,7 +5,7 @@
 # Installation
 
 ```
-wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/.dotfiles-script/dotfiles-init.sh | bash
+wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/.dotfiles-scripts/dotfiles-init.sh | bash
 
 bash $HOME/.dotfiles-scripts/setup.sh
 ```

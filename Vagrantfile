@@ -57,10 +57,10 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get upgrade -y
 
-    apt install -y gnome git
+    apt install -y gnome
+    apt install -y git
   SHELL
 
   INIT_SCRIPT = File.read(File.join(__dir__, "README.md")).match(/```(.*)```/m)[1].strip
-
-  config.vm.provision "shell", inline: INIT_SCRIPT
+  # config.vm.provision "shell", inline: INIT_SCRIPT
 end
