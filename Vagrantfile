@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--vram", "128"]
   end
   
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", inline: <<-AS_ROOT
     sudo su -
 
     echo "vagrant:vagrant" | chpasswd
@@ -59,8 +59,9 @@ Vagrant.configure("2") do |config|
 
     apt install -y gnome
     apt install -y git
-  SHELL
+  AS_ROOT
 
-  INIT_SCRIPT = File.read(File.join(__dir__, "README.md")).match(/```(.*)```/m)[1].strip
-  # config.vm.provision "shell", inline: INIT_SCRIPT
+  config.vm.provision "shell", inline: <<-TEST_INIT
+    bash /vagrant/.dotfiles-scripts/dotfiles-init.sh
+  TEST_INIT
 end
