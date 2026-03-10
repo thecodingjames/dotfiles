@@ -47,8 +47,6 @@ Vagrant.configure("2") do |config|
   end
   
   config.vm.provision "shell", inline: <<-AS_ROOT
-    sudo su -
-
     echo "vagrant:vagrant" | chpasswd
 
     export DEBIAN_FRONTEND=noninteractive
@@ -57,11 +55,12 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get upgrade -y
 
-    apt install -y gnome
-    apt install -y git
+    apt-get install -q -y \
+      gnome \
+      git
   AS_ROOT
 
   config.vm.provision "shell", inline: <<-TEST_INIT
-    bash /vagrant/.dotfiles-scripts/dotfiles-init.sh
+    su vagrant - -c "bash /vagrant/.dotfiles-scripts/init.sh"
   TEST_INIT
 end
