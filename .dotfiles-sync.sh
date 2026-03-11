@@ -2,15 +2,19 @@
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source $HERE/../.dotfiles-modules/dotfiles.sh
+source $HERE/.dotfiles-modules/dotfiles/dotfiles.sh
 
-echo "Dotfiles init..."
+echo "============="
+echo "DOTFILES SYNC"
+echo "============="
 
 if [ -d "$DOTFILES_GIT_DIR" ]; then
   echo "Dotfiles directory found"
 else
   echo "Cloning repo"
+
   git clone --bare $REPO_URL $DOTFILES_GIT_DIR
+  dotfiles config --local status.showUntrackedFiles no
 fi
 
 echo "Pulling repo..."
@@ -26,5 +30,3 @@ if [ -n "$CHANGED_FILES" ]; then
     # https://stackoverflow.com/questions/6958689/running-multiple-commands-with-xargs/51305211#comment97788770_51305211
     dotfiles checkout -f
 fi;
-
-echo -e  "\nYou should probably restart your terminal :)"

@@ -40,7 +40,8 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provider "virtualbox" do |vb|
-    vb.gui = true
+    DF_NO_UI = ENV["DF_NO_UI"]
+    vb.gui = DF_NO_UI ? false : true
   
     vb.memory = "4096"
     vb.customize ["modifyvm", :id, "--vram", "128"]
@@ -60,7 +61,22 @@ Vagrant.configure("2") do |config|
       git
   AS_ROOT
 
-  config.vm.provision "shell", inline: <<-TEST_INIT
-    su vagrant - -c "bash /vagrant/.dotfiles-scripts/init.sh"
-  TEST_INIT
+  DF_TEST_SYNC = ENV["DF_TEST_SYNC"]
+
+  source_message = DF_TEST_SYNC ? "SYNC from git" : "COPY from /vagrant"
+  source_command = if DF_TEST_SYNC
+    "/vagrant/.dotfiles-sync.sh"
+  else
+    "shopt -s dotglob extglob && eval 'cp -a /vagrant/!(.git) /home/vagrant/'"
+  end
+
+  config.vm.provision "shell", inline: <<-TEST_SOURCE
+    echo 'Running #{source_message}'
+    su vagrant -lc 'shopt -s dotglob extglob'
+    su vagrant -lc "#{source_command}" # Deliberate ", to wrap single-quote from source_command
+  TEST_SOURCE
+
+  config.vm.provision "shell", inline: <<-TEST_INSTALL
+    su vagrant -lc '/vagrant/.dotfiles-modules/install.sh'
+  TEST_INSTALL
 end
