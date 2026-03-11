@@ -1,8 +1,8 @@
 #! /bin/bash
 
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source $HERE/.dotfiles-modules/dotfiles/dotfiles.sh
+source $here/.dotfiles-modules/dotfiles/dotfiles.sh
 
 echo "============="
 echo "DOTFILES SYNC"
@@ -18,15 +18,15 @@ else
 fi
 
 echo "Pulling repo..."
-CHANGED_FILES=$(dotfiles pull &>/dev/null && dotfiles checkout)
+changed_files=$(dotfiles pull &>/dev/null && dotfiles checkout)
 
-if [ -n "$CHANGED_FILES" ]; then
-  BACKUP_PATH="$HOME/.dotfiles-backup-$(date +"%d-%m-%Y_%Hh%Mm%S")"
-  mkdir -p $BACKUP_PATH
+if [ -n "$changed_files" ]; then
+  backup_path="$HOME/.dotfiles-backup-$(date +"%d-%m-%Y_%Hh%Mm%S")"
+  mkdir -p $backup_path
 
-  echo "Moving existing dotfiles to $BACKUP_PATH";
+  echo "Moving existing dotfiles to $backup_path";
 
-  echo $CHANGED_FILES | egrep '\s+\S*\.\S+' | awk {'print $2'} | xargs -I{} bash -c 'mkdir -p $2/`dirname $1` && cp $HOME/$1 "$2/"$1' bashParams {} $BACKUP_PATH
+  echo $changed_files | egrep '\s+\S*\.\S+' | awk {'print $2'} | xargs -I{} bash -c 'mkdir -p $2/`dirname $1` && cp $HOME/$1 "$2/"$1' bashParams {} $backup_path
     # https://stackoverflow.com/questions/6958689/running-multiple-commands-with-xargs/51305211#comment97788770_51305211
     dotfiles checkout -f
 fi;

@@ -48,6 +48,7 @@ Vagrant.configure("2") do |config|
   end
   
   config.vm.provision "shell", inline: <<-AS_ROOT
+    echo "root:root" | chpasswd
     echo "vagrant:vagrant" | chpasswd
 
     export DEBIAN_FRONTEND=noninteractive
@@ -59,6 +60,12 @@ Vagrant.configure("2") do |config|
     apt-get install -q -y \
       gnome \
       git
+
+    cat <<-'AUTO_LOGIN' >> /etc/gdm3/daemon.conf
+    [daemon]
+    AutomaticLoginEnable=True
+    AutomaticLogin=vagrant
+AUTO_LOGIN
   AS_ROOT
 
   DF_TEST_SYNC = ENV["DF_TEST_SYNC"]
@@ -67,6 +74,8 @@ Vagrant.configure("2") do |config|
   source_command = if DF_TEST_SYNC
     "/vagrant/.dotfiles-sync.sh"
   else
+    # eval hacky hack to have glob options enabled
+    # otherwise the whole command is parsed at once and invalid until glob is enabled
     "shopt -s dotglob extglob && eval 'cp -a /vagrant/!(.git) /home/vagrant/'"
   end
 
@@ -75,8 +84,4 @@ Vagrant.configure("2") do |config|
     su vagrant -lc 'shopt -s dotglob extglob'
     su vagrant -lc "#{source_command}" # Deliberate ", to wrap single-quote from source_command
   TEST_SOURCE
-
-  config.vm.provision "shell", inline: <<-TEST_INSTALL
-    su vagrant -lc '/vagrant/.dotfiles-modules/install.sh'
-  TEST_INSTALL
 end

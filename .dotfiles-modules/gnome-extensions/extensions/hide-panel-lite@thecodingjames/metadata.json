@@ -1,0 +1,14 @@
+{
+  "description": "Hide top panel except in overview.",
+  "name": "Hide Panel Lite 45+",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49"
+  ],
+  "url": "https://github.com/thecodingjames/dotfiles/tree/main/.dotfiles-modules/gnome-extensions/extensions/hide-panel-lite@thecodingjames",
+  "uuid": "hide-panel-lite@thecodingjames",
+  "version": 1
+}

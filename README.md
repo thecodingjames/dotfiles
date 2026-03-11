@@ -14,6 +14,15 @@ bash $HOME/.dotfiles-scripts/setup.sh
 
 # Testing
 
+Users
+
+- root:root
+- vagrant:vagrant
+
+```
+vagrant reload --provision && vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+```
+
 To avoid resetting the VM entirely between iterations, use `vagrant reload --provision`, otherwise `vagrant destroy -f && vagrant up` will configure a new VM from scratch.
 
 A Vagrant VM allows to easily tests changes to the config. To disable VirtualBox's GUI set `DF_NO_UI` when booting the VM.

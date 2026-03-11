@@ -1,0 +1,14 @@
+{
+  "description": "Always launch a new instance when clicking in the dash or the application view.\nThis extension is part of Classic Mode and is officially supported by GNOME. Please do not report bugs using the form below, use GNOME's GitLab instance instead.",
+  "name": "Launch new instance",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49"
+  ],
+  "url": "https://gitlab.gnome.org/GNOME/gnome-shell-extensions/-/tree/main/extensions/launch-new-instance?ref_type=heads",
+  "uuid": "launch-new-instance@thecodingjames",
+  "version": 1
+}
