@@ -21,9 +21,15 @@ cat <<'SOURCE' > $source_file
 
 SOURCE
 
-modules=("dotfiles" "gnome-extensions")
+# default modules
+modules=('dotfiles' 'terminal')
+
+# optional modules
+modules+=('gnome-extensions')
 
 for module in "${modules[@]}"; do
+
+  echo "Handling module [$module]"
 
   module_directory="$HOME/.dotfiles-modules/$module"
 
@@ -33,6 +39,7 @@ for module in "${modules[@]}"; do
   module_source_file="$module_directory/source.sh"
 
   if [[ -f "$module_source_file" ]]; then
+    echo "  Adding source"
 
     module_source_command="source $module_source_file"
 
@@ -48,6 +55,8 @@ for module in "${modules[@]}"; do
   module_install_file="$module_directory/install.sh"
 
   if [[ -f "$module_install_file" ]]; then
+    echo "  Running install"
+
     bash "$module_install_file"
   fi
 
@@ -58,4 +67,4 @@ echo 'DONE'
 echo '~~~~'
 
 echo 'Reload Gnome session'
-echo 'su -lc 'systemctl restart gdm'
+echo "su -lc 'systemctl restart gdm'"
