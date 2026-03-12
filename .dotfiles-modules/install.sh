@@ -22,7 +22,7 @@ cat <<'SOURCE' > $source_file
 SOURCE
 
 # default modules
-modules=('dotfiles' 'terminal')
+modules=('dotfiles' 'terminal' 'git')
 
 # optional modules
 modules+=('gnome-extensions')

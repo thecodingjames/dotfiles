@@ -10,16 +10,9 @@ read -r -d '' ROOTCMD <<ASROOT
 	apt -q update && apt -q -y upgrade
 
     apt -q -y install \
-        gnome-tweaks \
 		exfat-fuse \
-		xclip \
 		unrar-free \
-		zip \
-		unzip \
-		vim  \
-		git \
 		curl \
-		tmux \
 		make \
 		httpie \
 		glances \

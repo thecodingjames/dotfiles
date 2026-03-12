@@ -34,6 +34,6 @@ DF_NO_UI=1 vagrant up
 Testing uses local files when booting the VM, but it's also possible to validate the sync script from git using `DF_TEST_SYNC`
 
 ```
-DF_TEST_SYNC DF_NO_UI=1 vagrant up
+DF_TEST_SYNC=1 DF_NO_UI=1 vagrant up
 ```
 
