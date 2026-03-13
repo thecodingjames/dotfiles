@@ -21,6 +21,16 @@ cat <<'SOURCE' > $source_file
 
 SOURCE
 
+# declare -A SOURCE_COMMANDS
+# declare -A INSTALL_COMMANDS
+
+declare -A ROOT_COMMANDS
+as_root() {
+  module=$(basename $(dirname "${BASH_SOURCE[1]}"))
+  ROOT_COMMANDS[$module]="$1"
+  echo "  > Added commands to run as root"
+}
+
 # default modules
 modules=('dotfiles' 'terminal' 'git')
 
@@ -29,7 +39,7 @@ modules+=('gnome-extensions')
 
 for module in "${modules[@]}"; do
 
-  echo "Handling module [$module]"
+  echo "Processing [$module]"
 
   module_directory="$HOME/.dotfiles-modules/$module"
 
@@ -39,11 +49,11 @@ for module in "${modules[@]}"; do
   module_source_file="$module_directory/source.sh"
 
   if [[ -f "$module_source_file" ]]; then
-    echo "  Adding source"
-
     module_source_command="source $module_source_file"
 
     if ! grep -Fxq "$module_source_command" "$source_file"; then
+      echo "  Applying source"
+
       echo "$module_source_command" >> "$source_file"
     fi
 
@@ -57,10 +67,29 @@ for module in "${modules[@]}"; do
   if [[ -f "$module_install_file" ]]; then
     echo "  Running install"
 
-    bash "$module_install_file"
+    source "$module_install_file"
   fi
-
 done
+
+echo ''
+echo 'Root needed for further configuration'
+
+read -r -d '' root_needed <<'_'
+  eval "'"$param"'"
+
+  for module in \"${!ROOT_COMMANDS[@]}\"; do
+    echo \"[$module]\"
+
+    if [[ -v ROOT_COMMANDS["$module"] ]]; then
+      echo \"[$module]\"
+      echo \"> Rooting...\"
+    fi
+  done
+_
+
+param=$(declare -p ROOT_COMMANDS)
+
+su -lc "param='$param'; eval '$root_needed'"
 
 echo '~~~~'
 echo 'DONE'

@@ -8,6 +8,6 @@ mkdir -p $destination
 
 cp -r "$here"/extensions/* $destination
 
-su -lc "apt-get -y install gnome-shell-extension-manager"
+as_root 'apt-get -y install gnome-shell-extension-manager'
 
 dconf write /org/gnome/shell/enabled-extensions "['hide-panel-lite@thecodingjames', 'launch-new-instance@thecodingjames']"
