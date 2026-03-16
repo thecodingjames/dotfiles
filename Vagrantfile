@@ -43,6 +43,7 @@ Vagrant.configure("2") do |config|
     DF_NO_UI = ENV["DF_NO_UI"]
     vb.gui = DF_NO_UI ? false : true
   
+    vb.cpus = "4"
     vb.memory = "4096"
     vb.customize ["modifyvm", :id, "--vram", "128"]
   end
