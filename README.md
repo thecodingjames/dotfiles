@@ -37,3 +37,18 @@ Testing uses local files when booting the VM, but it's also possible to validate
 DF_TEST_SYNC=1 DF_NO_UI=1 vagrant up
 ```
 
+# Architecture
+
+
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+```
+as_root 'apt-get -qq -y install \
+  vim \
+  tmux \
+  fzf \
+  xclip \
+  zip \
+  unzip \
+'
+```

@@ -3,7 +3,6 @@
 echo '++++++++++++++++'
 echo 'DOTFILES INSTALL'
 echo '++++++++++++++++'
-echo ''
 
 source_file="$HOME/.dotfiles-source"
 source_command="source $source_file"
@@ -22,13 +21,17 @@ cat <<'SOURCE' > $source_file
 
 SOURCE
 
-# declare -A SOURCE_COMMANDS
-# declare -A INSTALL_COMMANDS
-
 declare -A ROOT_COMMANDS
 as_root() {
   module=$(basename $(dirname "${BASH_SOURCE[1]}"))
-  ROOT_COMMANDS[$module]=$(printf '%q' "$1")
+  
+  code=$1
+  if [ -z "$code" ]; then
+    read code
+  fi
+
+  ROOT_COMMANDS[$module]=$(printf '%q' "$code")
+
   echo "  > Added commands to run as root"
 }
 
@@ -36,10 +39,11 @@ as_root() {
 modules=('dotfiles' 'terminal' 'git')
 
 # optional modules
-modules+=('gnome')
+modules+=('gnome' 'cli-apps' 'desktop-apps')
 
 for module in "${modules[@]}"; do
 
+  echo ''
   echo "Processing [$module]"
 
   module_directory="$HOME/.dotfiles-modules/$module"
@@ -78,8 +82,8 @@ echo 'Root needed for further configuration'
 read -r -d '' root_needed <<'_'
   echo ''
 
-  export DEBIAN_FRONTEND=noninteractive
   eval "$param"
+  export DEBIAN_FRONTEND=noninteractive
 
   for module in "${!ROOT_COMMANDS[@]}"; do
     echo ''
@@ -87,6 +91,7 @@ read -r -d '' root_needed <<'_'
     
     # eval to var first to handle escaped space \
     # from printf %q in as_root() to allow associative array transfert
+
     eval "code=${ROOT_COMMANDS[$module]}"
     eval "$code" \
     | grep -v -E "already|Reading|Building|Solving" \
@@ -104,3 +109,6 @@ echo '~~~~'
 echo ''
 echo 'Reload Gnome session'
 echo "su -lc 'systemctl restart gdm'"
+echo ''
+echo 'Enable firewall'
+echo "su -lc 'ufw enable'"

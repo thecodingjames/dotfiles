@@ -10,11 +10,7 @@ mkdir -p "$REPOS"
 
 alias cdr="cd $REPOS"
 
-alias pbc="xclip -sel clip"
-alias pbp="xclip -out -sel clip"
-
 eval "$(fzf --bash)"
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 source "$here"/prj.sh
