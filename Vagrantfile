@@ -51,6 +51,8 @@ Vagrant.configure("2") do |config|
     echo "root:root" | chpasswd
     echo "vagrant:vagrant" | chpasswd
 
+    sed -i s/"1"/"0"/g /etc/apt/apt.conf.d/20auto-upgrades
+
     export DEBIAN_FRONTEND=noninteractive
     export NEEDRESTART_MODE=a
 

@@ -36,7 +36,7 @@ as_root() {
 modules=('dotfiles' 'terminal' 'git')
 
 # optional modules
-modules+=('gnome-extensions')
+modules+=('gnome')
 
 for module in "${modules[@]}"; do
 
