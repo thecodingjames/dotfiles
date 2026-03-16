@@ -1,3 +1,1 @@
-#! /bin/bash
-
-as_root 'apt-get -y install vim tmux fzf xclip zip unzip'
+as_root 'apt-get -qq -y install vim tmux fzf xclip zip unzip'

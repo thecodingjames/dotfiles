@@ -1,8 +1,9 @@
 #! /bin/bash
 
-echo "++++++++++++++++"
-echo "DOTFILES INSTALL"
-echo "++++++++++++++++"
+echo '++++++++++++++++'
+echo 'DOTFILES INSTALL'
+echo '++++++++++++++++'
+echo ''
 
 source_file="$HOME/.dotfiles-source"
 source_command="source $source_file"
@@ -27,7 +28,7 @@ SOURCE
 declare -A ROOT_COMMANDS
 as_root() {
   module=$(basename $(dirname "${BASH_SOURCE[1]}"))
-  ROOT_COMMANDS[$module]="$1"
+  ROOT_COMMANDS[$module]=$(printf '%q' "$1")
   echo "  > Added commands to run as root"
 }
 
@@ -75,25 +76,31 @@ echo ''
 echo 'Root needed for further configuration'
 
 read -r -d '' root_needed <<'_'
-  eval "'"$param"'"
+  echo ''
 
-  for module in \"${!ROOT_COMMANDS[@]}\"; do
-    echo \"[$module]\"
+  export DEBIAN_FRONTEND=noninteractive
+  eval "$param"
 
-    if [[ -v ROOT_COMMANDS["$module"] ]]; then
-      echo \"[$module]\"
-      echo \"> Rooting...\"
-    fi
+  for module in "${!ROOT_COMMANDS[@]}"; do
+    echo ''
+    echo "> Running as root [$module]"
+    
+    # eval to var first to handle escaped space \
+    # from printf %q in as_root() to allow associative array transfert
+    eval "code=${ROOT_COMMANDS[$module]}"
+    eval "$code" \
+    | grep -v -E "already|Reading|Building|Solving" \
+    | sed -e "/^The following package(s)? (was|were) automatically installed and (is|are) no longer required:/,/^Use 'apt autoremove' to remove (it|them)\./d"
   done
 _
 
-param=$(declare -p ROOT_COMMANDS)
+su -lc "param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
 
-su -lc "param='$param'; eval '$root_needed'"
-
+echo ''
 echo '~~~~'
 echo 'DONE'
 echo '~~~~'
 
+echo ''
 echo 'Reload Gnome session'
 echo "su -lc 'systemctl restart gdm'"
