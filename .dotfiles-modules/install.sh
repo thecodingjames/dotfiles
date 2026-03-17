@@ -35,18 +35,31 @@ as_root() {
   echo "  > Added commands to run as root"
 }
 
+modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Default module
 modules=('terminal')
 
-# cli-apps desktop-apps dotfiles git gnome node php ruby wacom
-modules+=('cli-apps' 'gnome' 'desktop-apps' 'php' 'ruby')
+# cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom
+# modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
+#
+# modules+=(cli-apps)
+# modules+=(desktop-apps)
+# modules+=(dotfiles)
+# modules+=(git)
+# modules+=(gnome)
+# modules+=(node)
+# modules+=(php)
+# modules+=(ruby)
+# modules+=(vbox-vagrant)
+# modules+=(wacom)
 
 for module in "${modules[@]}"; do
 
   echo ''
   echo "Processing [$module]"
 
-  module_directory="$HOME/.dotfiles-modules/$module"
+  module_directory="$modules_root/$module"
 
   #
   # Source

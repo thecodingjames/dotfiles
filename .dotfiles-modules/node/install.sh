@@ -1,9 +1,13 @@
 current_user=$(whoami)
+node_version=24
 
 as_root <<_
-  apt-get install nodejs npm; \
+  curl -fsSL https://deb.nodesource.com/setup_$node_version.x | bash -; \
+  apt-get -qq -y install nodejs; \
 \
-  echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p; \
+  if ! grep -Fxq "max_user_watches=524288" /etc/sysctl.conf; then \
+    echo fs.inotify.max_user_watches=524288 >> /etc/sysctl.conf && sysctl -p > /dev/null; \
+  fi; \
 \
-  su $current_user -lc "mkdir -p ~/.npm-global/lib; npm config set prefix '~/.npm-global'";
+  su $current_user -lc "mkdir -p /home/$current_user/.npm-global/lib; npm config set prefix /home/$current_user/.npm-global";
 _

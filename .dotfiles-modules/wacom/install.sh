@@ -7,4 +7,7 @@ Exec="$here/.dotfiles-modules/wacom/buttons.sh"
 Type=Application
 _
 
-echo "$STARTUPBUTTONS" > $HOME/.config/autostart/wacom.desktop
+autostart_dir=$HOME/.config/autostart
+mkdir -p $autostart_dir
+
+echo "$STARTUPBUTTONS" > $autostart_dir/wacom.desktop
