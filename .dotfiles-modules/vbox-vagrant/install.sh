@@ -1,5 +1,8 @@
 as_root <<'_'
 apt-get -qq -y install \
+  linux-headers-$(uname -r) \
+  dkms \
+  libvpx-dev \
   libqt6core6t64 \
   libqt6dbus6 \
   libqt6gui6 \
@@ -21,5 +24,5 @@ do \
   rm -f $app; \
 done; \
 \
-apt-get --fix-broken -y install; \
+/sbin/vboxconfig;
 _

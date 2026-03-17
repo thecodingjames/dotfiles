@@ -40,6 +40,12 @@ Testing uses local files when booting the VM, but it's also possible to validate
 DF_TEST_SYNC=1 DF_NO_UI=1 vagrant up --provision
 ```
 
+Complete fresh test command
+
+```
+vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+```
+
 # Architecture
 
 

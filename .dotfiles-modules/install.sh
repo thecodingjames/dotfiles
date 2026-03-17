@@ -41,7 +41,7 @@ modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 modules=('terminal')
 
 # cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom
-# modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
+modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
 #
 # modules+=(cli-apps)
 # modules+=(desktop-apps)

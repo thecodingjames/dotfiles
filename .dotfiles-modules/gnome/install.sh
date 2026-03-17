@@ -1,10 +1,10 @@
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-destination="$HOME"/.local/share/gnome-shell/extensions/
+extensions_destination="$HOME"/.local/share/gnome-shell/extensions/
 
-mkdir -p $destination
+mkdir -p $extensions_destination
 
-cp -r "$here"/extensions/* $destination
+cp -r "$here"/extensions/* $extensions_destination
 
 as_root 'apt-get -qq -y install gnome-shell-extension-manager'
 
@@ -71,9 +71,11 @@ gsettings set org.gnome.nautilus.list-view use-tree-view true
 gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size', 'date_modified']"
 
 # Disable default Places
-echo "enabled=false" > ~/.config/user-dirs.conf
+mkdir -p $HOME/.config/
+echo "enabled=false" > $HOME/.config/user-dirs.conf
 
 # Remove unwanted bookmarks added by default
+mkdir -p $HOME/.config/gtk-3.0
 echo "" > ~/.config/gtk-3.0/bookmarks
 
 read -r -d '' OFFF <<_
@@ -86,4 +88,6 @@ Categories=Utility
 Terminal=false
 _
 
-echo "$OFFF" > $HOME/.local/share/applications/offf.desktop
+custom_desktop_apps_destination=$HOME/.local/share/applications/
+mkdir -p $custom_desktop_apps_destination
+echo "$OFFF" > $custom_desktop_apps_destination/offf.desktop
