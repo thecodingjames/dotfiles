@@ -35,11 +35,11 @@ as_root() {
   echo "  > Added commands to run as root"
 }
 
-# default modules
-modules=('dotfiles' 'terminal' 'git')
+# Default module
+modules=('terminal')
 
-# optional modules
-modules+=('gnome' 'cli-apps' 'desktop-apps')
+# cli-apps desktop-apps dotfiles git gnome node php ruby wacom
+modules+=('cli-apps' 'gnome' 'desktop-apps' 'php' 'ruby')
 
 for module in "${modules[@]}"; do
 
@@ -109,6 +109,20 @@ echo '~~~~'
 echo ''
 echo 'Reload Gnome session'
 echo "su -lc 'systemctl restart gdm'"
+
 echo ''
 echo 'Enable firewall'
 echo "su -lc 'ufw enable'"
+
+echo ''
+echo 'Git config'
+echo 'git config --global user.name <name>'
+echo 'git config --global user.email <email>'
+
+echo ''
+echo 'SSH RSA'
+ssh-keygen -f ~/.ssh/id_rsa -P ""
+eval `ssh-agent`
+ssh-add ~/.ssh/id_rsa
+
+

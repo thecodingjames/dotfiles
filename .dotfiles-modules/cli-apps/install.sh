@@ -13,6 +13,7 @@ apt-get -qq -y install \
   handbrake-cli \
   make \
   build-essential \
+  dpkg-dev \
   linux-headers-amd64 \
   linux-headers-$uname \
   ufw

@@ -75,3 +75,15 @@ echo "enabled=false" > ~/.config/user-dirs.conf
 
 # Remove unwanted bookmarks added by default
 echo "" > ~/.config/gtk-3.0/bookmarks
+
+read -r -d '' OFFF <<_
+[Desktop Entry]
+Name=Offf
+GenericName=Turn off
+Exec=systemctl poweroff
+Type=Application
+Categories=Utility
+Terminal=false
+_
+
+echo "$OFFF" > $HOME/.local/share/applications/offf.desktop
