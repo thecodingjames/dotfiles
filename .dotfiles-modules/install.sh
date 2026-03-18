@@ -96,7 +96,6 @@ read -r -d '' root_needed <<'_'
   echo ''
 
   eval "$param"
-  export DEBIAN_FRONTEND=noninteractive
 
   for module in "${!ROOT_COMMANDS[@]}"; do
     echo ''
@@ -104,15 +103,33 @@ read -r -d '' root_needed <<'_'
     
     # eval to var first to handle escaped space \
     # from printf %q in as_root() to allow associative array transfert
-
     eval "code=${ROOT_COMMANDS[$module]}"
-    eval "$code" \
-    | grep -v -E "already|Reading|Building|Solving" \
-    | sed -e "/^The following package(s)? (was|were) automatically installed and (is|are) no longer required:/,/^Use 'apt autoremove' to remove (it|them)\./d"
+    code="${code//apt /apt -y }"
+    code="${code//apt-get/apt-get -y}"
+
+    output=$(export DEBIAN_FRONTEND=noninteractive; eval "$code" 2>&1) 
+
+    if [[ -n "$VERBOSE_OUTPUT" ]]; then
+      # Verbose set, output everything to specified destination
+      echo "$output" &>"$VERBOSE_OUTPUT"
+    else
+      echo "$output" &>/dev/stdout \
+      \
+      | grep -v -E "already|Reading|Building|Solving|stable CLI interface|newly installed|Processing triggers" \
+      | grep -v -E "Hit:" \
+      | sed -e "/^The following package(s)? (was|were) automatically installed and (is|are) no longer required:/,/^Use 'apt autoremove' to remove (it|them)\./d" \
+      \
+      | grep -v -E "ruby-install|checking whether|compiling|installing|linking|make\[|cleaning|configuring|% \[" \
+      \
+      | grep -v -E "vboxdrv"
+    fi
   done
 _
 
-su -lc "param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
+output=''
+# output=/dev/stdout
+# output=/dev/null
+su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
 
 echo ''
 echo '~~~~'

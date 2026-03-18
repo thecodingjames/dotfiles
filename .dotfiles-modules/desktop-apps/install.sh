@@ -24,9 +24,9 @@ do \
   src=\"\${debs[\${app}]}\"; \
 \
   wget -q -O \$app \$src; \
-  dpkg -i \$app > /dev/null; \
+  dpkg -i \$app; \
   rm -f \$app; \
 done; \
 \
-su $current_user -lc "code --install-extension ms-vscode-remote.remote-ssh formulahendry.code-runner vscodevim.vim > /dev/null";
+su $current_user -lc "code --install-extension ms-vscode-remote.remote-ssh formulahendry.code-runner vscodevim.vim";
 _

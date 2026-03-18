@@ -4,6 +4,6 @@ as_root <<_
     php-pear php-zip php-curl php-xml php-xmlrpc php-gd php-mysql php-mbstring; \
 \
   curl -sS https://getcomposer.org/installer -o composer-setup.php; \
-  php composer-setup.php --install-dir=/usr/local/bin --filename=composer > /dev/null; \
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
   rm composer-setup.php;
 _

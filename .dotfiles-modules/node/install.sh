@@ -6,7 +6,7 @@ as_root <<_
   apt-get -qq -y install nodejs; \
 \
   if ! grep -Fxq "max_user_watches=524288" /etc/sysctl.conf; then \
-    echo fs.inotify.max_user_watches=524288 >> /etc/sysctl.conf && sysctl -p > /dev/null; \
+    echo fs.inotify.max_user_watches=524288 >> /etc/sysctl.conf && sysctl -p >/dev/null; \
   fi; \
 \
   su $current_user -lc "mkdir -p /home/$current_user/.npm-global/lib; npm config set prefix /home/$current_user/.npm-global";
