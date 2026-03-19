@@ -96,6 +96,7 @@ read -r -d '' root_needed <<'_'
   eval "$param"
 
   for module in $(printf "%s\n" "${!ROOT_COMMANDS[@]}" | LC_ALL=C sort); do
+    echo ''
     echo "> Running as root [$module]"
     
     # eval to var first to handle escaped space \
@@ -104,20 +105,12 @@ read -r -d '' root_needed <<'_'
     code="${code//apt /apt -y }"
     code="${code//apt-get/apt-get -y}"
 
-    output=$(export DEBIAN_FRONTEND=noninteractive; eval "$code" 2>&1) 
-
-    if [[ -n "$VERBOSE_OUTPUT" ]]; then
-      # Verbose set, output everything to specified destination
-      echo "$output" &>"$VERBOSE_OUTPUT"
-    else
-      echo "$output" >/dev/null
-    fi
+    export DEBIAN_FRONTEND=noninteractive
+    eval "$code" &>"$VERBOSE_OUTPUT"
   done
 _
 
 output="${VERBOSE:-'/dev/null'}"
-# output=/dev/stdout
-# output=/dev/null
 su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
 
 echo ''
@@ -143,5 +136,3 @@ echo 'SSH RSA'
 ssh-keygen -f ~/.ssh/id_rsa -P ""
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
-
-

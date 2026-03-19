@@ -61,3 +61,9 @@ as_root 'apt-get -qq -y install \
   unzip \
 '
 ```
+
+VERBOSE=...
+/dev/stdout
+/path/to/file
+
+
