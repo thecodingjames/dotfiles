@@ -1,5 +1,5 @@
 as_root <<'_'
-apt-get -qq -y install \
+apt-get install \
   linux-headers-$(uname -r) \
   dkms \
   libvpx-dev \

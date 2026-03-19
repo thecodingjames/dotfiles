@@ -1,5 +1,5 @@
 as_root <<_
-  apt-get -qq -y install \
+  apt-get install \
     php php-cli \
     php-pear php-zip php-curl php-xml php-xmlrpc php-gd php-mysql php-mbstring; \
 \

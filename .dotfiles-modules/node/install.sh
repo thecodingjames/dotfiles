@@ -2,8 +2,8 @@ current_user=$(whoami)
 node_version=24
 
 as_root <<_
-  curl -fsSL https://deb.nodesource.com/setup_$node_version.x | bash -; \
-  apt-get -qq -y install nodejs; \
+  curl -fsSL https://deb.nodesource.com/setup_$node_version.x | bash - >/dev/null; \
+  apt-get install nodejs; \
 \
   if ! grep -Fxq "max_user_watches=524288" /etc/sysctl.conf; then \
     echo fs.inotify.max_user_watches=524288 >> /etc/sysctl.conf && sysctl -p >/dev/null; \

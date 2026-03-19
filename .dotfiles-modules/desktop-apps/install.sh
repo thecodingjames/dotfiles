@@ -3,7 +3,7 @@
 current_user=$(whoami)
 
 as_root <<_
-apt-get -qq -y install \
+apt-get install \
   libreoffice \
   vlc \
   cheese \
@@ -12,9 +12,7 @@ apt-get -qq -y install \
   obs-studio \
   audacity \
   handbrake \
-  shotcut \
-  trimage \
-  insomnia ;\
+  shotcut; \
 \
 declare -A debs; \
 debs["vscode"]="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; \

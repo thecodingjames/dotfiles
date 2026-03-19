@@ -3,7 +3,7 @@
 uname=$(uname -r)
 
 as_root <<_ 
-apt-get -qq -y install \
+apt-get install \
   exfat-fuse \
   unrar-free \
   xclip \

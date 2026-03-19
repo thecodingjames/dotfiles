@@ -93,12 +93,9 @@ echo ''
 echo 'Root needed for further configuration'
 
 read -r -d '' root_needed <<'_'
-  echo ''
-
   eval "$param"
 
-  for module in "${!ROOT_COMMANDS[@]}"; do
-    echo ''
+  for module in $(printf "%s\n" "${!ROOT_COMMANDS[@]}" | LC_ALL=C sort); do
     echo "> Running as root [$module]"
     
     # eval to var first to handle escaped space \
@@ -113,20 +110,12 @@ read -r -d '' root_needed <<'_'
       # Verbose set, output everything to specified destination
       echo "$output" &>"$VERBOSE_OUTPUT"
     else
-      echo "$output" &>/dev/stdout \
-      \
-      | grep -v -E "already|Reading|Building|Solving|stable CLI interface|newly installed|Processing triggers" \
-      | grep -v -E "Hit:" \
-      | sed -e "/^The following package(s)? (was|were) automatically installed and (is|are) no longer required:/,/^Use 'apt autoremove' to remove (it|them)\./d" \
-      \
-      | grep -v -E "ruby-install|checking whether|compiling|installing|linking|make\[|cleaning|configuring|% \[" \
-      \
-      | grep -v -E "vboxdrv"
+      echo "$output" >/dev/null
     fi
   done
 _
 
-output=''
+output="${VERBOSE:-'/dev/null'}"
 # output=/dev/stdout
 # output=/dev/null
 su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
