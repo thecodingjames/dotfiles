@@ -15,9 +15,9 @@ apt-get install \
 \
 virtualbox_url="https://download.virtualbox.org/virtualbox/7.2.6/virtualbox-7.2_7.2.6-172322~Debian~trixie_amd64.deb"; \
 \
-wget -q -O vbox $virtualbox_url; \
-dpkg -i vbox; \
-rm -f vbox; \
+wget -q -O /tmp/vbox $virtualbox_url; \
+dpkg -i /tmp/vbox; \
+rm -f /tmp/vbox; \
 \
 /sbin/vboxconfig;
 _

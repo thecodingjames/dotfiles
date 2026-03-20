@@ -41,7 +41,7 @@ modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 modules=('terminal')
 
 # cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom
-modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
+# modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
 #
 # modules+=(cli-apps)
 # modules+=(desktop-apps)
@@ -54,10 +54,14 @@ modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wa
 # modules+=(vbox-vagrant)
 # modules+=(wacom)
 
+modules_count=${#modules[@]}
+index=0
+
 for module in "${modules[@]}"; do
+  ((index++))
 
   echo ''
-  echo "Processing [$module]"
+  echo "( $index / $modules_count ) Processing [$module]"
 
   module_directory="$modules_root/$module"
 
@@ -95,9 +99,14 @@ echo 'Root needed for further configuration'
 read -r -d '' root_needed <<'_'
   eval "$param"
 
+  root_modules_count=${#ROOT_COMMANDS[@]}
+  root_index=0
+
   for module in $(printf "%s\n" "${!ROOT_COMMANDS[@]}" | LC_ALL=C sort); do
+    ((root_index++))
+
     echo ''
-    echo "> Running as root [$module]"
+    echo "( $root_index / $root_modules_count ) Running as root [$module]"
     
     # eval to var first to handle escaped space \
     # from printf %q in as_root() to allow associative array transfert
@@ -106,7 +115,7 @@ read -r -d '' root_needed <<'_'
     code="${code//apt-get/apt-get -y}"
 
     export DEBIAN_FRONTEND=noninteractive
-    eval "$code" &>"$VERBOSE_OUTPUT"
+    eval "$code" &>>"$VERBOSE_OUTPUT"
   done
 _
 
