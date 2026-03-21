@@ -9,41 +9,14 @@
 ```
 wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/.dotfiles-scripts/sync.sh | bash
 
-bash $HOME/.dotfiles-scripts/setup.sh
+bash $HOME/.dotfiles-modules/install.sh
 ```
 
-# Testing
-
-Users
-
-- root:root
-- vagrant:vagrant
-
-Make sure to create the VM to install Gnome first, then reboot to launch install script.
+# Update
 
 ```
-vagrant up
-vagrant reload && vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
-```
-
-To avoid resetting the VM entirely between iterations, use `vagrant reload --provision`, otherwise `vagrant destroy -f && vagrant up` will configure a new VM from scratch.
-
-A Vagrant VM allows to easily tests changes to the config. To disable VirtualBox's GUI set `DF_NO_UI` when booting the VM.
-
-```
-DF_NO_UI=1 vagrant up
-```
-
-Testing uses local files when booting the VM, but it's also possible to validate the sync script from git using `DF_TEST_SYNC`
-
-```
-DF_TEST_SYNC=1 DF_NO_UI=1 vagrant up --provision
-```
-
-Complete fresh test command
-
-```
-vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+dotfiles pull
+bash $HOME/.dotfiles-modules/install.sh
 ```
 
 # Architecture
@@ -60,10 +33,59 @@ as_root 'apt-get -qq -y install \
   zip \
   unzip \
 '
+
+# AVOID single quote in install script
 ```
 
 VERBOSE=...
 /dev/stdout
 /path/to/file
 
+.dotfiles-modules/install.sh some-module or-another
+
+
+# Testing
+
+A Vagrant VM allows to easily tests changes to the config.
+
+*Users*
+
+- root:root
+- vagrant:vagrant
+
+Make sure to create the VM to install Gnome first, then reboot to launch install script.
+```
+vagrant up
+vagrant reload && vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+```
+
+To disable VirtualBox's GUI set `DF_NO_UI` when creating the VM.
+```
+DF_NO_UI=1 vagrant up
+# ...
+```
+
+First way to test is to run the install script from the Vagrant synced folder
+```
+vagrant ssh -- '/vagrant/.dotfiles-modules/install.sh'
+```
+
+Otherwise, to avoid resetting the VM entirely between iterations, use `vagrant reload --provision`, otherwise `vagrant destroy -f && vagrant up` will configure a new VM from scratch.
+
+Testing uses local files when booting the VM, but it's also possible to validate the sync script from git using `DF_TEST_SYNC`
+
+```
+DF_TEST_SYNC=1 vagrant up --provision; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+```
+
+## Complete fresh test command
+
+```
+vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+```
+
+or using sync for git
+```
+DF_TEST_SYNC=1 vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+```
 

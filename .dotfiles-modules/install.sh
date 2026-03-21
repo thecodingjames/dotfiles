@@ -37,8 +37,39 @@ as_root() {
 
 modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+VALID_MODULES=( $modules_root/*/ )
+VALID_MODULES=( "${VALID_MODULES[@]%/}" )
+VALID_MODULES=( "${VALID_MODULES[@]#"$modules_root/"}" )
+
+requested_modules=($@)
+
+declare -A in_VALID_MODULES=(); for x in "${VALID_MODULES[@]}"; do in_VALID_MODULES["$x"]=1; done
+declare -A found=(); invalid=()
+for x in "${requested_modules[@]}"; do
+  if [[ -z ${in_VALID_MODULES[$x]+_} && -z ${found[$x]+_} ]]; then
+    found["$x"]=1
+    invalid+=("$x")
+  fi
+done
+
+if (( ${#invalid[@]} > 0 )); then
+    echo ''
+    echo 'Invalid modules requested'
+    printf "  %s\n"  "${invalid[@]}"
+    exit 0
+fi
+
+if (( ${#requested_modules[@]} == 0 )); then
+  # Use all modules by default, if none provided
+  requested_modules=( "${VALID_MODULES[@]}" )
+fi
+
 # Default module
 modules=('terminal')
+
+modules+=("${requested_modules[@]}")
+# Keep only unique values
+mapfile -t modules < <(printf '%s\n' "${modules[@]}" | sort -u)
 
 # cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom
 # modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
