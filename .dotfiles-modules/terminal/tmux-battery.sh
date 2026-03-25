@@ -17,7 +17,7 @@ for battery in /sys/class/power_supply/BAT*; do
     status=$(<"$battery/status")
     status=${status,,}
 
-    if ! [[ "$status" =~ (not\ charging|discharging) ]]; then
+    if ! [[ "$status" =~ (discharging) ]]; then
       is_charging=1
     fi
   fi
