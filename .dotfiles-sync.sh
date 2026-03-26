@@ -2,7 +2,7 @@
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source $here/.dotfiles-modules/dotfiles/dotfiles.sh
+source $here/.dotfiles-modules/dotfiles/sources.sh
 
 echo "============="
 echo "DOTFILES SYNC"
