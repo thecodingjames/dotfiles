@@ -10,11 +10,26 @@ export LS_OPTIONS='--color=auto'
 export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-export PS1=$BLACK"\u@\h"'$(
-    if [[ $(__git_ps1) =~ \*\)$ ]]
+git_ps1() {
+  echo $BLACK"\u@\h"'$(
+    git_status=$(__git_ps1) 
+    if [[ git_status =~ \*\)$ ]]
     # a file has been modified but not added
     then echo "'$YELLOW'"$(__git_ps1 " (%s)")
-    elif [[ $(__git_ps1) =~ \+\)$ ]]
+    elif [[ git_status =~ \+\)$ ]]
+    # a file has been added, but not commited
+    then echo "'$MAGENTA'"$(__git_ps1 " (%s)")
+    # the state is clean, changes are commited
+    else echo "'$CYAN'"$(__git_ps1 " (%s)")
+    fi)'$DARK_GRAY" \w"$BLACK": "
+}
+
+export __PS1=$BLACK"\u@\h"'$(
+    git_status=$(__git_ps1) 
+    if [[ git_status =~ \*\)$ ]]
+    # a file has been modified but not added
+    then echo "'$YELLOW'"$(__git_ps1 " (%s)")
+    elif [[ git_status =~ \+\)$ ]]
     # a file has been added, but not commited
     then echo "'$MAGENTA'"$(__git_ps1 " (%s)")
     # the state is clean, changes are commited
