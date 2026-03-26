@@ -15,14 +15,14 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 
 export default class HidePanel extends Extension {
-    _allAreas() {
-      return ['activities', 'quickSettings']
-    }
 
     _applyToAreas(action) {
-      this._allAreas.forEach((area) => {
-        Panel.statusArea[area][action]();
-      })
+      const areas = ['activities', 'quickSettings']
+
+      for(let i = 0; i < areas.length; i++) {
+        Panel.statusArea[areas[i]][action]();
+
+      }
     }
 
     _show() {
