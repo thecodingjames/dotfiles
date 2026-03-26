@@ -4,7 +4,14 @@ export PROMPT_DIRTRIM=3
 BLACK="\[\033[0;30m\]"
 DARK_GRAY="\[\033[1;90m\]"
 
-export PS1="$DARK_GRAY\w/ $BLACK"
+prompt="$DARK_GRAY\w/ $BLACK"
+
+if [[ $PS1 =~ __git_ps1 ]]; then
+  # Make prompt handle dependency from git modules prompt
+  export PS1=$( eval "echo \"${DOTFILES_GIT_PS1/'${PS1}'/"$prompt"}\"" )
+else
+  export PS1="$prompt"
+fi
 
 alias ll='ls -alF'
 alias la='ls -A'

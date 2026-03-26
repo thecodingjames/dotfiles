@@ -29,6 +29,8 @@ git_ps1() {
     fi)'
 }
 
-if ! [[ $PS1 =~ __git_ps1 ]]; then
-  export PS1="${PS1}$(git_ps1) $BLACK"
+export DOTFILES_GIT_PS1='${PS1}$(git_ps1)$BLACK'
+
+if ! [[ "$PS1" =~ __git_ps1 ]]; then
+  export PS1=$(eval "echo \"${DOTFILES_GIT_PS1} \"")
 fi
