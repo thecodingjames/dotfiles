@@ -8,7 +8,7 @@
     "48",
     "49"
   ],
-  "url": "https://gitlab.gnome.org/GNOME/gnome-shell-extensions/-/tree/main/extensions/launch-new-instance?ref_type=heads",
+  "url": "https://github.com/thecodingjames/dotfiles/tree/main/.dotfiles-modules/gnome/extensions/launch-new-instance@thecodingjames",
   "uuid": "launch-new-instance@thecodingjames",
   "version": 1
 }
