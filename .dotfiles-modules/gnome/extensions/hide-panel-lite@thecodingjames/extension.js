@@ -16,7 +16,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 export default class HidePanel extends Extension {
     _allAreas() {
-      return Object.keys(Panel.statusArea)
+      return ['activities', 'quickSettings']
     }
 
     _applyToAreas(action) {
