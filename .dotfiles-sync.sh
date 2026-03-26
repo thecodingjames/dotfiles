@@ -2,7 +2,16 @@
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source $here/.dotfiles-modules/dotfiles/source.sh
+# Keep lines below in sync with 
+# ./.dotfiles-modules/dotfiles/source.sh
+REPO_URL=https://github.com/thecodingjames/dotfiles.git
+DOTFILES_GIT_DIR="$HOME/.dotfiles"
+
+dotfiles() {
+    git --git-dir=$DOTFILES_GIT_DIR --work-tree=$HOME $@
+}
+#
+# END
 
 echo "============="
 echo "DOTFILES SYNC"
