@@ -133,6 +133,9 @@ read -r -d '' root_needed <<'_'
   root_modules_count=${#ROOT_COMMANDS[@]}
   root_index=0
 
+  apt-get update &>>"$VERBOSE_OUTPUT"
+  apt-get upgrade -y &>>"$VERBOSE_OUTPUT"
+
   for module in $(printf "%s\n" "${!ROOT_COMMANDS[@]}" | LC_ALL=C sort); do
     ((root_index++))
 
