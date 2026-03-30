@@ -7,7 +7,7 @@
 # Installation
 
 ```
-wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/.dotfiles-sync.sh | bash
+wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/dotfiles-sync.sh | bash
 
 bash $HOME/.dotfiles-modules/install.sh
 ```

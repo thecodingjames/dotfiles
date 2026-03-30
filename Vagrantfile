@@ -75,7 +75,7 @@ AUTO_LOGIN
 
   source_message = DF_TEST_SYNC ? "SYNC from git" : "COPY from /vagrant"
   source_command = if DF_TEST_SYNC
-    "/vagrant/.dotfiles-sync.sh"
+    "/vagrant/dotfiles-sync.sh"
   else
     # eval hacky hack to have glob options enabled
     # otherwise the whole command is parsed at once and invalid until glob is enabled

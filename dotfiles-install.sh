@@ -35,7 +35,7 @@ as_root() {
   echo "  > Added commands to run as root"
 }
 
-modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.dotfiles-modules"
 
 VALID_MODULES=( $modules_root/*/ )
 VALID_MODULES=( "${VALID_MODULES[@]%/}" )
