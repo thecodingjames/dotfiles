@@ -38,5 +38,4 @@ command! CDC lcd %:p:h
 let g:user_emmet_leader_key = ','
 let g:user_emmet_mode='a'
 
-source /usr/share/doc/fzf/examples/fzf.vim
-let $FZF_DEFAULT_COMMAND='find'
+nnoremap '' :FZF<cr>
