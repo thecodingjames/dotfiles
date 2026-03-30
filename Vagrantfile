@@ -23,6 +23,33 @@ Vagrant.configure("2") do |config|
 
     apt-get update
     apt-get -y upgrade
+
+    apt-get autoclean
+    apt-get -y autoremove
+
+    apt-get install -q -y \
+      gnome \
+      git
+
+    cat <<-'AUTO_LOGIN' >> /etc/gdm3/daemon.conf
+[daemon]
+AutomaticLoginEnable=True
+AutomaticLogin=vagrant
+AUTO_LOGIN
+  AS_ROOT
+
+  #
+  # Upgrade DEBIAN
+  #
+  # run: "never" | "always"
+  # to control whether to update debian, usefull to test using debian 12
+  # 
+  config.vm.provision "shell", run: "always", inline: <<-AS_ROOT
+    export DEBIAN_FRONTEND=noninteractive
+    export NEEDRESTART_MODE=a
+
+    apt-get update
+    apt-get -y upgrade
     apt-get -y dist-upgrade
 
     apt-get autoclean
@@ -42,16 +69,6 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get -y upgrade
     apt-get -y dist-upgrade
-
-    apt-get install -q -y \
-      gnome \
-      git
-
-    cat <<-'AUTO_LOGIN' >> /etc/gdm3/daemon.conf
-[daemon]
-AutomaticLoginEnable=True
-AutomaticLogin=vagrant
-AUTO_LOGIN
   AS_ROOT
 
   DF_TEST_SYNC = ENV["DF_TEST_SYNC"]
@@ -65,9 +82,10 @@ AUTO_LOGIN
     "shopt -s dotglob extglob && eval 'cp -a /vagrant/!(.git) /home/vagrant/'"
   end
 
-  config.vm.provision "shell", inline: <<-TEST_SOURCE
+  config.vm.provision "shell", inline: <<-SYNC
     echo 'Running #{source_message}'
+
     su vagrant -lc 'shopt -s dotglob extglob'
     su vagrant -lc "#{source_command}" # Deliberate ", to wrap single-quote from source_command
-  TEST_SOURCE
+  SYNC
 end
