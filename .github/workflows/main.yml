@@ -8,11 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: git archive --worktree-attributes --format=tar.gz --output=dotfiles.tar.gz HEAD
       - name: Compute short sha
         run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dotfiles.tar.gz
           tag_name: ${{ env.short_sha }}
