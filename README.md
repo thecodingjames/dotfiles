@@ -12,6 +12,13 @@ wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/m
 bash $HOME/.dotfiles-modules/install.sh
 ```
 
+
+```
+export repo=https://github.com/thecodingjames/dotfiles; wget -O dotfiles.tar.gz $repo/archive/refs/tags/$(wget -Sq $repo/releases/latest 2>&1 | grep Location: | awk -F '/' '{print $NF}').tar.gz
+
+tar -x --strip-components=1 --directory=$HOME -f dotfiles.tar.gz
+```
+
 # Update
 
 ```
