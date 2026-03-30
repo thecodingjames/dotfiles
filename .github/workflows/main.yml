@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+    - main
+jobs:
+  archive:
+    name: make tar archive
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: git archive --worktree-attributes --format=tar.gz --output=dotfiles.tar.gz HEAD
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dotfiles.tar.gz
