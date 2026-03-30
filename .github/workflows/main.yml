@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Compute short sha
-        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      - name: Compute epoch timestamp
+        run: echo "tag=${EPOCHSECONDS}" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.short_sha }}
+          tag_name: ${{ env.tag }}
