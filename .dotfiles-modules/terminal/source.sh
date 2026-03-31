@@ -5,15 +5,15 @@ BLACK="\[\033[0;30m\]"
 DARK_GRAY="\[\033[1;90m\]"
 LIGHT_GRAY="\[\033[1;90m\]"
 
-theme=$(gsettings get org.gnome.desktop.interface color-scheme)
 
-if [[ $theme =~ 'prefer-dark' ]]; then
-  text_color=$WHITE
-else
-  text_color=$BLACK
-fi
-
-prompt="$DARK_GRAY\w/ $text_color"
+prompt="$DARK_GRAY\w/ \$(
+  theme=\$(gsettings get org.gnome.desktop.interface color-scheme)
+  if [[ \$theme =~ 'prefer-dark' ]]; then
+    echo '$WHITE'
+  else
+    echo '$BLACK'
+  fi
+)"
 
 if [[ $PS1 =~ __git_ps1 ]]; then
   # Make prompt handle dependency from git modules prompt
