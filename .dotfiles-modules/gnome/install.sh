@@ -70,7 +70,7 @@ gsettings set org.gnome.nautilus.list-view use-tree-view true
 # Columns to show in list view
 gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size', 'date_modified']"
 
-gsettings set org.gnome.desktop.background.primary-color "black"
+gsettings set org.gnome.desktop.background primary-color "black"
 
 # Disable default Places
 mkdir -p $HOME/.config/

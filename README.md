@@ -1,33 +1,37 @@
-# Requirements
-
-- git
-
-> Setup extracted from <https://www.atlassian.com/git/tutorials/dotfiles>
-
 # Installation
 
+By default, uses git source and install all modules
 ```
 wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/dotfiles-sync.sh | bash
 
-bash $HOME/.dotfiles-modules/install.sh
+bash $HOME/dotfiles-install.sh
 ```
 
-
+You can also use the `archive` source
 ```
-export repo=https://github.com/thecodingjames/dotfiles; wget -O dotfiles.tar.gz $repo/archive/refs/tags/$(wget -Sq $repo/releases/latest 2>&1 | grep Location: | awk -F '/' '{print $NF}').tar.gz
-
-tar -x --strip-components=1 --directory=$HOME -f dotfiles.tar.gz
+export SOURCE=archive; wget -qO- https://raw.githubusercontent.com/thecodingjames/dotfiles/refs/heads/main/dotfiles-sync.sh | bash
 ```
+
+And provide specific modules to install
+```
+bash $HOME/dotfiles-install.sh terminal cli-apps
+```
+
+Configs are saved to `.dotfiles-config`, so next time *sync* and *install* will reuse the same values.
+
 
 # Update
 
 ```
-dotfiles pull
-bash $HOME/.dotfiles-modules/install.sh
+./$HOME/dotfiles-sync.sh
+
+./$HOME/dotfiles-install.sh
 ```
 
-# Architecture
+Using SOURCE or specific modules will update configs.
 
+
+# Architecture
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -96,3 +100,4 @@ or using sync for git
 DF_TEST_SYNC=1 vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
 ```
 
+> Inspired from <https://www.atlassian.com/git/tutorials/dotfiles>

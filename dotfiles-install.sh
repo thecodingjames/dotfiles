@@ -1,5 +1,14 @@
 #! /bin/bash
 
+dotfiles_config="$HOME/.dotfiles-config" 
+
+declare -a config_modules=()
+
+if [[ -f "$dotfiles_config" ]]; then
+  source "$dotfiles_config"
+  # provides $config_modules
+fi
+
 echo '++++++++++++++++'
 echo 'DOTFILES INSTALL'
 echo '++++++++++++++++'
@@ -59,17 +68,35 @@ if (( ${#invalid[@]} > 0 )); then
     exit 0
 fi
 
-if (( ${#requested_modules[@]} == 0 )); then
+
+if (( ${#requested_modules[@]} == 0 && ${#config_modules[@]} == 0)); then
+  echo "Using all modules"
+
   # Use all modules by default, if none provided
   requested_modules=( "${VALID_MODULES[@]}" )
 fi
 
-# Default module
+if (( ${#config_modules[@]} != 0)); then
+  if (( ${#requested_modules[@]} == 0 )); then
+    echo "Using modules from config"
+  else
+    echo "Adding requested modules to config"
+  fi
+  
+  # Load modules from config
+  requested_modules+=("${config_modules[@]}")
+fi
+
+# Default
 modules=('terminal')
 
+# Requested
 modules+=("${requested_modules[@]}")
+
 # Keep only unique values
 mapfile -t modules < <(printf '%s\n' "${modules[@]}" | sort -u)
+
+echo "[ ${modules[@]} ]"
 
 # cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom
 # modules+=(cli-apps desktop-apps dotfiles git gnome node php ruby vbox-vagrant wacom)
@@ -154,7 +181,17 @@ read -r -d '' root_needed <<'_'
 _
 
 output="${VERBOSE:-'/dev/null'}"
+
 su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
+
+config_modules=( "${modules[@]}" )
+config_modules_declare="$(declare -p config_modules)"
+
+if grep -Fq "config_modules" $dotfiles_config; then
+  sed -i "/config_modules/s/^.*$/$config_modules_declare/" "$dotfiles_config"
+else
+  echo "$config_modules_declare" >> "$dotfiles_config"
+fi
 
 echo ''
 echo '~~~~'
