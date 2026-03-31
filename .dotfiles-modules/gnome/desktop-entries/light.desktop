@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=lllight
+GenericName=Switch to light mode
+Exec=dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
+Type=Application
+Categories=Utility
+Terminal=false

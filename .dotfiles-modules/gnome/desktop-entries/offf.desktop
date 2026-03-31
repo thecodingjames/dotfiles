@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Offf
+GenericName=Turn off
+Exec=systemctl poweroff
+Type=Application
+Categories=Utility
+Terminal=false

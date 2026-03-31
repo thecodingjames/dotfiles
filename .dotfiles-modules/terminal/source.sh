@@ -3,8 +3,17 @@ export PROMPT_DIRTRIM=3
 
 BLACK="\[\033[0;30m\]"
 DARK_GRAY="\[\033[1;90m\]"
+LIGHT_GRAY="\[\033[1;90m\]"
 
-prompt="$DARK_GRAY\w/ $BLACK"
+theme=$(gsettings get org.gnome.desktop.interface color-scheme)
+
+if [[ $theme =~ 'prefer-dark' ]]; then
+  text_color=$WHITE
+else
+  text_color=$BLACK
+fi
+
+prompt="$DARK_GRAY\w/ $text_color"
 
 if [[ $PS1 =~ __git_ps1 ]]; then
   # Make prompt handle dependency from git modules prompt

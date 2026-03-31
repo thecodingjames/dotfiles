@@ -42,3 +42,5 @@ fi;
 
 echo ""
 echo "Sync done!"
+
+source $HOME/.bashrc

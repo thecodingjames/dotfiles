@@ -70,6 +70,8 @@ gsettings set org.gnome.nautilus.list-view use-tree-view true
 # Columns to show in list view
 gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size', 'date_modified']"
 
+gsettings set org.gnome.desktop.background.primary-color "black"
+
 # Disable default Places
 mkdir -p $HOME/.config/
 echo "enabled=false" > $HOME/.config/user-dirs.conf
@@ -78,16 +80,9 @@ echo "enabled=false" > $HOME/.config/user-dirs.conf
 mkdir -p $HOME/.config/gtk-3.0
 echo "" > ~/.config/gtk-3.0/bookmarks
 
-read -r -d '' OFFF <<_
-[Desktop Entry]
-Name=Offf
-GenericName=Turn off
-Exec=systemctl poweroff
-Type=Application
-Categories=Utility
-Terminal=false
-_
-
-custom_desktop_apps_destination=$HOME/.local/share/applications/
+custom_desktop_apps_destination=$HOME/.local/share/applications
 mkdir -p $custom_desktop_apps_destination
-echo "$OFFF" > $custom_desktop_apps_destination/offf.desktop
+
+for entry in $here/desktop-entries/*; do
+  cp $entry "$custom_desktop_apps_destination/$(basename $entry)"
+done

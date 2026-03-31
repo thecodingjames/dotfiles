@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=dddark
+GenericName=Switch to dark mode
+Exec=dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+Type=Application
+Categories=Utility
+Terminal=false

@@ -39,3 +39,17 @@ let g:user_emmet_leader_key = ','
 let g:user_emmet_mode='a'
 
 nnoremap '' :FZF<cr>
+
+function! SetTheme()
+  let g:gnome_theme = system('gsettings get org.gnome.desktop.interface color-scheme')
+
+  if g:gnome_theme =~ 'prefer-dark'
+      colorscheme onehalfdark
+  else
+      colorscheme onehalflight
+  endif
+endfunction
+
+call SetTheme()
+autocmd FocusGained * :call SetTheme()
+autocmd SafeState * :call SetTheme()
