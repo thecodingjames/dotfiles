@@ -17,8 +17,18 @@ And provide specific modules to install
 bash $HOME/dotfiles-install.sh terminal cli-apps
 ```
 
-Configs are saved to `.dotfiles-config`, so next time *sync* and *install* will reuse the same values.
+> Configs are saved to `.dotfiles-config`, so next time *sync* and *install* will reuse the same modules and source.
 
+
+It's also possible to skip running the commands as root
+```
+SKIP_ROOT=1 bash $HOME/dotfiles-install.sh terminal cli-apps
+```
+
+And provide a verbose output to a valid file descriptor such as `/dev/stdout` or any path `/tmp/log-df.txt`
+```
+VERBOSE=/dev/stdout bash $HOME/dotfiles-install.sh terminal cli-apps
+```
 
 # Update
 
@@ -27,8 +37,6 @@ Configs are saved to `.dotfiles-config`, so next time *sync* and *install* will 
 
 ./$HOME/dotfiles-install.sh
 ```
-
-Using SOURCE or specific modules will update configs.
 
 
 # Architecture
@@ -47,12 +55,6 @@ as_root 'apt-get -qq -y install \
 
 # AVOID single quote in install script
 ```
-
-VERBOSE=...
-/dev/stdout
-/path/to/file
-
-.dotfiles-modules/install.sh some-module or-another
 
 
 # Testing

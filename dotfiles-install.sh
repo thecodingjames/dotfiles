@@ -1,4 +1,7 @@
 #! /bin/bash
+#
+# VERBOSE
+# SKIP_ROOT
 
 dotfiles_config="$HOME/.dotfiles-config" 
 touch $dotfiles_config
@@ -13,6 +16,11 @@ fi
 echo '++++++++++++++++'
 echo 'DOTFILES INSTALL'
 echo '++++++++++++++++'
+
+if [[ -n $SKIP_ROOT ]]; then
+  echo "Will skip root commands..."
+  echo ""
+fi
 
 source_file="$HOME/.dotfiles-source"
 source_command="source $source_file"
@@ -31,29 +39,31 @@ cat <<'SOURCE' > $source_file
 
 SOURCE
 
-declare -A ROOT_COMMANDS
+declare -A root_commands
 as_root() {
-  module=$(basename $(dirname "${BASH_SOURCE[1]}"))
-  
-  code=$1
-  if [ -z "$code" ]; then
-    read code
+  if [[ -z $SKIP_ROOT ]]; then
+    module=$(basename $(dirname "${BASH_SOURCE[1]}"))
+    
+    code=$1
+    if [ -z "$code" ]; then
+      read code
+    fi
+
+    root_commands[$module]=$(printf '%q' "$code")
+
+    echo "  > Added commands to run as root"
   fi
-
-  ROOT_COMMANDS[$module]=$(printf '%q' "$code")
-
-  echo "  > Added commands to run as root"
 }
 
 modules_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.dotfiles-modules"
 
-VALID_MODULES=( $modules_root/*/ )
-VALID_MODULES=( "${VALID_MODULES[@]%/}" )
-VALID_MODULES=( "${VALID_MODULES[@]#"$modules_root/"}" )
+valid_modules=( $modules_root/*/ )
+valid_modules=( "${valid_modules[@]%/}" )
+valid_modules=( "${valid_modules[@]#"$modules_root/"}" )
 
 requested_modules=($@)
 
-declare -A in_VALID_MODULES=(); for x in "${VALID_MODULES[@]}"; do in_VALID_MODULES["$x"]=1; done
+declare -A in_VALID_MODULES=(); for x in "${valid_modules[@]}"; do in_VALID_MODULES["$x"]=1; done
 declare -A found=(); invalid=()
 for x in "${requested_modules[@]}"; do
   if [[ -z ${in_VALID_MODULES[$x]+_} && -z ${found[$x]+_} ]]; then
@@ -74,7 +84,7 @@ if (( ${#requested_modules[@]} == 0 && ${#config_modules[@]} == 0)); then
   echo "Using all modules"
 
   # Use all modules by default, if none provided
-  requested_modules=( "${VALID_MODULES[@]}" )
+  requested_modules=( "${valid_modules[@]}" )
 fi
 
 if (( ${#config_modules[@]} != 0)); then
@@ -152,19 +162,16 @@ for module in "${modules[@]}"; do
   fi
 done
 
-echo ''
-echo 'Root needed for further configuration'
-
 read -r -d '' root_needed <<'_'
   eval "$param"
 
-  root_modules_count=${#ROOT_COMMANDS[@]}
+  root_modules_count=${#root_commands[@]}
   root_index=0
 
   apt-get update &>>"$VERBOSE_OUTPUT"
   apt-get upgrade -y &>>"$VERBOSE_OUTPUT"
 
-  for module in $(printf "%s\n" "${!ROOT_COMMANDS[@]}" | LC_ALL=C sort); do
+  for module in $(printf "%s\n" "${!root_commands[@]}" | LC_ALL=C sort); do
     ((root_index++))
 
     echo ''
@@ -172,7 +179,7 @@ read -r -d '' root_needed <<'_'
     
     # eval to var first to handle escaped space \
     # from printf %q in as_root() to allow associative array transfert
-    eval "code=${ROOT_COMMANDS[$module]}"
+    eval "code=${root_commands[$module]}"
     code="${code//apt /apt -y }"
     code="${code//apt-get/apt-get -y}"
 
@@ -181,9 +188,14 @@ read -r -d '' root_needed <<'_'
   done
 _
 
-output="${VERBOSE:-'/dev/null'}"
+if [[ -z $SKIP_ROOT ]]; then
+  echo ''
+  echo 'Root needed for further configuration'
 
-su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
+  output="${VERBOSE:-'/dev/null'}"
+
+  su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p root_commands)'; eval '$root_needed'"
+fi
 
 
 if (( ${#config_modules[@]} == 0 )); then
