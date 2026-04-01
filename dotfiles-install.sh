@@ -1,6 +1,7 @@
 #! /bin/bash
 
 dotfiles_config="$HOME/.dotfiles-config" 
+touch $dotfiles_config
 
 declare -a config_modules=()
 
@@ -184,6 +185,42 @@ output="${VERBOSE:-'/dev/null'}"
 
 su -lc "VERBOSE_OUTPUT="$output"; param='$(declare -p ROOT_COMMANDS)'; eval '$root_needed'"
 
+
+if (( ${#config_modules[@]} == 0 )); then
+  # First time only
+
+  if [[ -n "$(which gnome-shell)" ]]; then
+    echo ''
+    echo 'Might need to reload Gnome session'
+
+    echo "su -lc 'systemctl restart gdm'"
+  fi
+
+  if [[ -n "$(apt list --installed 2>/dev/null | grep ufw)" ]]; then
+    echo ''
+    echo 'Enable firewall'
+
+    echo "su -lc 'ufw enable'"
+  fi
+
+  if [[ -z "$(git config --global user.email)" ]]; then
+    echo ''
+    echo 'Git config'
+
+    echo 'git config --global user.email <email>'
+    echo 'git config --global user.name <name>'
+  fi
+
+  if ! [[ -f "$HOME/.ssh/id_rsa" ]]; then
+    echo ''
+    echo 'SSH RSA'
+
+    ssh-keygen -f $HOME/.ssh/id_rsa -P ""
+    eval `ssh-agent`
+    ssh-add $HOME/.ssh/id_rsa
+  fi
+fi
+
 config_modules=( "${modules[@]}" )
 config_modules_declare="$(declare -p config_modules)"
 
@@ -197,22 +234,3 @@ echo ''
 echo '~~~~'
 echo 'DONE'
 echo '~~~~'
-
-echo ''
-echo 'Reload Gnome session'
-echo "su -lc 'systemctl restart gdm'"
-
-echo ''
-echo 'Enable firewall'
-echo "su -lc 'ufw enable'"
-
-echo ''
-echo 'Git config'
-echo 'git config --global user.name <name>'
-echo 'git config --global user.email <email>'
-
-echo ''
-echo 'SSH RSA'
-ssh-keygen -f ~/.ssh/id_rsa -P ""
-eval `ssh-agent`
-ssh-add ~/.ssh/id_rsa

@@ -1,6 +1,7 @@
 #! /bin/bash
 
 dotfiles_config="$HOME/.dotfiles-config" 
+touch $dotfiles_config
 
 if [[ -f "$dotfiles_config" ]]; then
   source "$dotfiles_config"
