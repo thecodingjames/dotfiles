@@ -230,6 +230,8 @@ else
   echo "$config_modules_declare" >> "$dotfiles_config"
 fi
 
+source $HOME/.bashrc
+
 echo ''
 echo '~~~~'
 echo 'DONE'
