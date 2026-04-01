@@ -2,11 +2,9 @@ export EDITOR=vim
 export PROMPT_DIRTRIM=3
 
 BLACK="\[\033[0;30m\]"
-DARK_GRAY="\[\033[1;90m\]"
-LIGHT_GRAY="\[\033[1;90m\]"
+BOLD_DARK_GRAY="\[\033[1;90m\]"
 
-
-prompt="$DARK_GRAY\w/ \$(
+prompt="$BOLD_DARK_GRAY\w/ \$(
   theme=\$(gsettings get org.gnome.desktop.interface color-scheme)
   if [[ \$theme =~ 'prefer-dark' ]]; then
     echo '$WHITE'
