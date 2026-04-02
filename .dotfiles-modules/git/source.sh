@@ -21,7 +21,7 @@ export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
 git_ps1() {
   echo $BLACK'$(
-    git_status=$(__git_ps1)
+    git_status=$(__git_ps1 "(%s)")
     if [[ "$git_status" =~ % ]]; then
       # a file has been added
       color="'$GREEN'"
@@ -35,7 +35,9 @@ git_ps1() {
       # the state is clean, changes are commited
       color="'$DARK_GRAY'"
     fi
-    echo -n $color$(__git_ps1 "(%s)")
+    git_status="${git_status//u/}"
+    git_status="${git_status//\*/\*}"
+    echo -n $color$git_status
     # Padding
     [[ -n $git_status ]] && echo -n " "
   )'
