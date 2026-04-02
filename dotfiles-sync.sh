@@ -27,7 +27,7 @@ echo "DOTFILES SYNC"
 echo "============="
 
 pull() {
-  changed_files=$(dotfiles pull &>/dev/null && dotfiles checkout 2>&1)
+  changed_files=$(dotfiles pull &>/dev/null; dotfiles checkout 2>&1)
 
   echo "$changed_files" | grep -E '^M?\s+\S*\.\S+' | awk {'print $NF'}
 }
@@ -68,7 +68,8 @@ if [[ $sync_source =~ 'git' ]]; then
 
   pull | backup
 
-  dotfiles checkout -f
+  dotfiles fetch origin
+  dotfiles reset --hard
 elif [[ $sync_source =~ 'archive' ]]; then
   echo ""
   echo "Downloading archive..."
