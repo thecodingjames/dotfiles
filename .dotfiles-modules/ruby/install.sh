@@ -1,4 +1,4 @@
-ruby_install='0.10.2'
+ruby_install=$(wget -Sq -O- https://github.com/postmodern/ruby-install/releases/latest 2>&1 | grep Location: | awk -F '/v' '{print $NF}')
 
 as_root <<_
   apt-get install make; \
