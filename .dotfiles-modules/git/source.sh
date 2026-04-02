@@ -35,8 +35,13 @@ git_ps1() {
       # the state is clean, changes are commited
       color="'$DARK_GRAY'"
     fi
+    # Remove u from upstream diff
     git_status="${git_status//u/}"
-    git_status="${git_status//\*/\*}"
+    # Escape * from status because it was expanded to list of files
+    git_status="${git_status//\*/\\*}"
+    # Remove = when up to date 
+    git_status="${git_status// =/}"
+    # Print prompt
     echo -n $color$git_status
     # Padding
     [[ -n $git_status ]] && echo -n " "
