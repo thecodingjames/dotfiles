@@ -22,6 +22,7 @@ dconf write /org/gnome/desktop/wm/keybindings/minimize "['']"
 dconf write /org/gnome/desktop/wm/keybindings/maximize "['']"
 dconf write /org/gnome/desktop/wm/keybindings/toggle-maximized "['<Super>m']"
 
+gsettings set org.freedesktop.ibus.panel.emoji hotkey "['']"
 dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>period']"
 
 dconf write /org/gnome/desktop/wm/keybindings/switch-windows "['<Shift>Escape']"
