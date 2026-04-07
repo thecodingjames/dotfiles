@@ -29,6 +29,11 @@ echo "============="
 pull() {
   changed_files=$(dotfiles pull &>/dev/null; dotfiles checkout 2>&1)
 
+  if [[ "$changed_files" =~ "up to date" ]]; then
+    echo "Dotfiles up to date! :)"
+    exit 0
+  fi
+
   echo "$changed_files" | grep -E '^M?\s+\S*\.\S+' | awk {'print $NF'}
 }
 
