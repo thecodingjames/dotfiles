@@ -31,6 +31,9 @@ set statusline=2
 colorscheme onehalflight
 set t_Co=256
 
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[2 q"
+
 map <leader>h :noh<CR>
 
 command! CDC lcd %:p:h
@@ -52,4 +55,5 @@ endfunction
 
 call SetTheme()
 autocmd FocusGained * :call SetTheme()
-autocmd SafeState * :call SetTheme()
+" too agressive
+" autocmd SafeState * :call SetTheme()
