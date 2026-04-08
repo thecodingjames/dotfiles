@@ -8,7 +8,12 @@ cp -r "$here"/extensions/* $extensions_destination
 
 as_root 'apt-get -y install gnome-shell-extension-manager'
 
-dconf write /org/gnome/shell/enabled-extensions "['hide-panel-lite@thecodingjames', 'launch-new-instance@thecodingjames']"
+if [[ $(cat /etc/debian_version) =~ ^12 ]]; then
+  # debian 12
+  dconf write /org/gnome/shell/enabled-extensions "['hide-panel-lite@fthx', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com']"
+else 
+  dconf write /org/gnome/shell/enabled-extensions "['hide-panel-lite@thecodingjames', 'launch-new-instance@thecodingjames']"
+fi
 
 dconf write /org/gnome/desktop/input-sources/sources "[('xkb', 'us'), ('xkb', 'ca')]"
 dconf write /org/gnome/desktop/input-sources/xkb-options "['caps:escape']"
