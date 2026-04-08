@@ -38,11 +38,11 @@ git_ps1() {
     # Remove u from upstream diff
     git_status="${git_status//u/}"
     # Escape * from status because it was expanded to list of files
-    git_status="${git_status//\*/\\*}"
+    git_status="${git_status//\*/*}"
     # Remove = when up to date 
     git_status="${git_status// =/}"
     # Print prompt
-    echo -n $color$git_status
+    echo -n "$color$git_status"
     # Padding
     [[ -n $git_status ]] && echo -n " "
   )'
