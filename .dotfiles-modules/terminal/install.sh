@@ -4,6 +4,7 @@ apt-get install \
   tmux \
   fzf \
   curl \
+  tree \
   zip \
   unzip
 _
