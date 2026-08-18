@@ -88,7 +88,7 @@ elif [[ $sync_source =~ 'archive' ]]; then
   echo "Downloading archive..."
 
   latest_release=$(wget -Sq $repo_url/releases/latest 2>&1 | grep Location: | awk -F '/' '{print $NF}')
-  wget -qO dotfiles.tar.gz "$repo_url/archive/refs/tags/$latest_release.tar.gz"
+  wget -qO $tar_file "$repo_url/archive/refs/tags/$latest_release.tar.gz"
 
   download | backup
 

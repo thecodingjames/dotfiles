@@ -33,9 +33,9 @@ VERBOSE=/dev/stdout bash $HOME/dotfiles-install.sh terminal cli-apps
 # Update
 
 ```
-./$HOME/dotfiles-sync.sh
+bash $HOME/dotfiles-sync.sh
 
-./$HOME/dotfiles-install.sh
+bash $HOME/dotfiles-install.sh
 ```
 
 
