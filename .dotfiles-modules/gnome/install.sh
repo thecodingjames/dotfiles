@@ -82,6 +82,8 @@ gsettings set org.gnome.desktop.background primary-color "black"
 default_profile=$(dconf list /org/gnome/terminal/legacy/profiles:/ | head -n1)
 
 dconf write /org/gnome/terminal/legacy/profiles:/${default_profile}audible-bell "false"
+
+dconf write /org/gnome/terminal/legacy/profiles:/${default_profile}use-system-font "false"
 dconf write /org/gnome/terminal/legacy/profiles:/${default_profile}font "'Monospace 22'"
 
 # Disable default Places
