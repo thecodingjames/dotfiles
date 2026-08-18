@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Offf
 GenericName=Turn off
-Exec=gnome-session-quit --logout --no-prompt
+Exec=systemctl shutdown
 Type=Application
 Categories=Utility
 Terminal=false
