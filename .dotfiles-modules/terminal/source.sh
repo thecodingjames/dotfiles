@@ -29,12 +29,16 @@ mkdir -p "$REPOS"
 
 alias cdr="cd $REPOS"
 
-if [[ $(cat /etc/debian_version) =~ ^12 ]]; then
-  # debian 12
-  source /usr/share/bash-completion/completions/fzf
-  source /usr/share/doc/fzf/examples/key-bindings.bash
-else
-  eval "$(fzf --bash)"
+if [[ -n $(which fzf) ]]; then
+  # fzf is installed
+
+  if [[ $(cat /etc/debian_version) =~ ^12 ]]; then
+    # debian 12
+    source /usr/share/bash-completion/completions/fzf
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+  else
+    eval "$(fzf --bash)"
+  fi
 fi
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
