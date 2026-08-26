@@ -5,7 +5,10 @@ BLACK="\[\033[0;30m\]"
 BOLD_DARK_GRAY="\[\033[1;90m\]"
 
 prompt="$BOLD_DARK_GRAY\w/ \$(
-  theme=\$(gsettings get org.gnome.desktop.interface color-scheme)
+  if [[ -n \$(which gsettings) ]]; then
+    theme=\$(gsettings get org.gnome.desktop.interface color-scheme)
+  fi
+
   if [[ \$theme =~ 'prefer-dark' ]]; then
     echo '$WHITE'
   else
