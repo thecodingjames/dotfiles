@@ -2,6 +2,10 @@
 
 current_user=$(whoami)
 
+repo_url=https://github.com/thecodingjames/peek
+latest_release=$(wget -Sq $repo_url/releases/latest 2>&1 | grep Location: | awk -F '/' '{print $NF}')
+peek_url="${repo_url}/releases/download/${latest_release}/peek_${latest_release:1}_amd64.deb"
+
 as_root <<_
 apt-get install \
   libreoffice \
@@ -28,11 +32,7 @@ done; \
 \
 su $current_user -lc "code --install-extension ms-vscode-remote.remote-ssh formulahendry.code-runner vscodevim.vim"; \
 \
-repo_url=https://github.com/thecodingjames/peek; \
-latest_release=$(wget -Sq $repo_url/releases/latest 2>&1 | grep Location: | awk -F '/' '{print $NF}'); \
-download_url="${repo_url}/releases/download/${latest_release}/peek_${latest_release:1}_amd64.deb"; \
-\
-wget -O /tmp/peek.deb $download_url; \
+wget -qO /tmp/peek.deb $peek_url; \
 apt -y install /tmp/peek.deb; \
 rm /tmp/peek.deb;
 _
