@@ -82,7 +82,7 @@ AUTO_LOGIN
     "shopt -s dotglob extglob && eval 'cp -a /vagrant/!(.git) /home/vagrant/'"
   end
 
-  config.vm.provision "shell", inline: <<-SYNC
+  config.vm.provision "shell", run: "always", inline: <<-SYNC
     echo 'Running #{source_message}'
 
     su vagrant -lc 'shopt -s dotglob extglob'

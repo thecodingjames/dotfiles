@@ -69,7 +69,7 @@ A Vagrant VM allows to easily tests changes to the config.
 Make sure to create the VM to install Gnome first, then reboot to launch install script.
 ```
 vagrant up
-vagrant reload && vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+vagrant reload && vagrant ssh -- '/home/vagrant/.dotfiles-install.sh'
 ```
 
 To disable VirtualBox's GUI set `DF_NO_UI` when creating the VM.
@@ -80,7 +80,7 @@ DF_NO_UI=1 vagrant up
 
 First way to test is to run the install script from the Vagrant synced folder
 ```
-vagrant ssh -- '/vagrant/.dotfiles-modules/install.sh'
+vagrant ssh -- '/vagrant/.dotfiles-install.sh'
 ```
 
 Otherwise, to avoid resetting the VM entirely between iterations, use `vagrant reload --provision`, otherwise `vagrant destroy -f && vagrant up` will configure a new VM from scratch.
@@ -88,18 +88,18 @@ Otherwise, to avoid resetting the VM entirely between iterations, use `vagrant r
 Testing uses local files when booting the VM, but it's also possible to validate the sync script from git using `DF_TEST_SYNC`
 
 ```
-DF_TEST_SYNC=1 vagrant up --provision; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+DF_TEST_SYNC=1 vagrant up --provision; vagrant ssh -- '/home/vagrant/.dotfiles-install.sh'
 ```
 
 ## Complete fresh test command
 
 ```
-vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-install.sh'
 ```
 
 or using sync for git
 ```
-DF_TEST_SYNC=1 vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-modules/install.sh'
+DF_TEST_SYNC=1 vagrant destroy -f; vagrant up; vagrant reload; vagrant ssh -- '/home/vagrant/.dotfiles-install.sh'
 ```
 
 > Inspired from <https://www.atlassian.com/git/tutorials/dotfiles>
