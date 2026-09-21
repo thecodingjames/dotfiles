@@ -1,0 +1,6 @@
+" let g:db = '...'
+" unlet g:db
+
+vnoremap <expr> mm ':terminal mysql -t ' . get(g:, 'db', '') . '<CR>'
+noremap <expr> mm 'vap:terminal mysql -t ' . get(g:, 'db', '') . '<CR>'
+noremap <expr> MM 'ggVG:terminal mysql -t ' . get(g:, 'db', '') . '<CR>'

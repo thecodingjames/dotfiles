@@ -1,0 +1,9 @@
+function! RubyRC(start, end)
+  let source = join(getline(a:start, a:end), "\n")
+
+  split
+  call term_start(['ruby', '-e', source], { 'curwin': v:true, })
+endfunction
+
+vnoremap mm :call RubyRC(line("'<"), line("'>"))<CR>
+noremap MM :call RubyRC(1, '$')<CR>
