@@ -1,6 +1,45 @@
-" let g:db = '...'
-" unlet g:db
+" let g:sql_db = '...'
+" unlet g:sql_db
 
-vnoremap <expr> mm ':terminal mysql -t ' . get(g:, 'db', '') . '<CR>'
-noremap <expr> mm 'vap:terminal mysql -t ' . get(g:, 'db', '') . '<CR>'
-noremap <expr> MM 'ggVG:terminal mysql -t ' . get(g:, 'db', '') . '<CR>'
+" let g:sql_user = '...'
+" unlet g:sql_user
+
+" let g:sql_password = '...'
+" unlet g:sql_password
+
+function! SqlRC(start, end)
+  let args = ['mysql', '-t']
+
+  if exists('g:sql_user')
+    call add(args, '-u' . get(g:, 'sql_user', ''))
+  endif
+
+  if exists('g:sql_password')
+    call add(args, '-p' . get(g:, 'sql_password', ''))
+  endif
+
+  let end = a:end
+  if end < 1
+    let end = '$'
+  endif
+
+  let code = join(getline(a:start, end), "\n")
+  call add(args, '-e')
+  call add(args, code)
+
+  if exists('g:sql_db')
+    call add(args, get(g:, 'sql_db', ''))
+  endif
+
+  split
+  call term_start(args, { 'curwin': v:true, })
+endfunction
+
+" Current selection
+vnoremap mm :<C-U>call SqlRC(line("'<"), line("'>"))<CR>
+
+" Current query/paragraph
+nnoremap mm :call SqlRC(search('^\s*$', 'bnW') + 1, search('^\s*$', 'nW') - 1)<CR>
+
+" Whole file
+nnoremap MM :call SqlRC(1, '$')<CR>
