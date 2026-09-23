@@ -36,10 +36,10 @@ function! SqlRC(start, end)
 endfunction
 
 " Current selection
-vnoremap mm :<C-U>call SqlRC(line("'<"), line("'>"))<CR>
+vnoremap <silent> mm :<C-U>call SqlRC(line("'<"), line("'>"))<CR>
 
 " Current query/paragraph
-nnoremap mm :call SqlRC(search('^\s*$', 'bnW') + 1, search('^\s*$', 'nW') - 1)<CR>
+nnoremap <silent> mm :call SqlRC(search('^\s*$', 'bnW') + 1, search('^\s*$', 'nW') - 1)<CR>
 
 " Whole file
-nnoremap MM :call SqlRC(1, '$')<CR>
+nnoremap <silent> MM :call SqlRC(1, '$')<CR>

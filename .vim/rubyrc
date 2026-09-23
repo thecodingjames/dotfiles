@@ -5,5 +5,5 @@ function! RubyRC(start, end)
   call term_start(['ruby', '-e', source], { 'curwin': v:true, })
 endfunction
 
-vnoremap mm :call RubyRC(line("'<"), line("'>"))<CR>
-noremap MM :call RubyRC(1, '$')<CR>
+vnoremap <silent> mm :call RubyRC(line("'<"), line("'>"))<CR>
+nnoremap <silent> MM :call RubyRC(1, '$')<CR>
