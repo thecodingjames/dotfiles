@@ -57,3 +57,33 @@ call SetTheme()
 autocmd FocusGained * :call SetTheme()
 " too agressive
 " autocmd SafeState * :call SetTheme()
+
+function! ToClipboard(range) abort
+  let saved = getreg('"')
+  let saved_type = getregtype('"')
+
+  let line = line('.')
+  let column = col('.')
+
+  execute('normal! ' . a:range . 'y')
+
+  call system('xclip -selection clipboard', getreg('"'))
+  call setreg('"', saved, saved_type)
+
+  call cursor(line, column)
+
+  echo ''
+  redraw
+  echomsg 'Sent to system clipboard'
+endfunction
+
+function! AllToClipboard() abort
+  call ToClipboard('ggVG')
+endfunction
+
+function! SelectionToClipboard() abort
+  call ToClipboard('gv')
+endfunction
+
+:nnoremap <cr> :call AllToClipboard()<cr>
+:vnoremap <cr> :<C-U> call SelectionToClipboard()<cr>
