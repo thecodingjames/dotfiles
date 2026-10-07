@@ -4,7 +4,7 @@ current_user=$(whoami)
 
 repo_url=https://github.com/thecodingjames/peek
 latest_release=$(wget -Sq $repo_url/releases/latest 2>&1 | grep Location: | awk -F '/' '{print $NF}')
-peek_url="${repo_url}/releases/download/${latest_release}/peek_${latest_release:1}_amd64.deb"
+peek_url="${repo_url}/releases/download/${latest_release}/peek-http_${latest_release:1}_amd64.deb"
 
 as_root <<_
 apt-get install \
