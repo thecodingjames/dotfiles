@@ -32,7 +32,7 @@ mkdir -p "$REPOS"
 
 alias cdr="cd $REPOS"
 
-if [[ command -v fzf ]]; then
+if command -v fzf; then
   if [[ $(cat /etc/debian_version) =~ ^12 ]]; then
     # debian 12
     source /usr/share/bash-completion/completions/fzf
