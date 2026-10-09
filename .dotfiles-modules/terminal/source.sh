@@ -32,9 +32,7 @@ mkdir -p "$REPOS"
 
 alias cdr="cd $REPOS"
 
-if [[ -n $(which fzf) ]]; then
-  # fzf is installed
-
+if [[ command -v fzf ]]; then
   if [[ $(cat /etc/debian_version) =~ ^12 ]]; then
     # debian 12
     source /usr/share/bash-completion/completions/fzf
@@ -46,3 +44,7 @@ fi
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$here"/prj.sh
+
+if [[ $- == *i* && -z ${TMUX:-} ]] && command -v tmux; then
+  exec tmux new-session
+fi
